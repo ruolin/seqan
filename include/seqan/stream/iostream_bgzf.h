@@ -23,6 +23,17 @@
 #ifndef SEQAN_BGZF_NUM_THREADS
 #define SEQAN_BGZF_NUM_THREADS 16
 #endif
+#ifdef BGZF_MAX_BLOCK_SIZE
+#pragma push_macro("BGZF_MAX_BLOCK_SIZE")
+#undef BGZF_MAX_BLOCK_SIZE
+#define BGZF_MAX_BLOCK_SIZE_BAK
+#endif
+
+#ifdef BGZF_BLOCK_SIZE
+#pragma push_macro("BGZF_BLOCK_SIZE")
+#undef BGZF_BLOCK_SIZE
+#define BGZF_BLOCK_SIZE_BAK
+#endif
 
 namespace seqan {
 
@@ -30,6 +41,7 @@ const unsigned BGZF_MAX_BLOCK_SIZE = 64 * 1024;
 const unsigned BGZF_BLOCK_HEADER_LENGTH = 18;
 const unsigned BGZF_BLOCK_FOOTER_LENGTH = 8;
 const unsigned ZLIB_BLOCK_OVERHEAD = 5; // 5 bytes block overhead (see 3.2.4. at http://www.gzip.org/zlib/rfc-deflate.html)
+
 
 // Reduce the maximal input size, such that the compressed data
 // always fits in one block even for level Z_NO_COMPRESSION.
@@ -928,4 +940,13 @@ typedef basic_bgzf_istream<wchar_t> bgzf_wistream;
 
 }  // namespace seqan
 
+#ifdef BGZF_MAX_BLOCK_SIZE_BAK
+#undef BGZF_MAX_BLOCK_SIZE_BAK
+#pragma pop_macro("BGZF_MAX_BLOCK_SIZE")
+#endif
+
+#ifdef BGZF_BLOCK_SIZE_BAK
+#undef BGZF_BLOCK_SIZE_BAK
+#pragma pop_macro("BGZF_BLOCK_SIZE")
+#endif
 #endif // INCLUDE_SEQAN_STREAM_IOSTREAM_BGZF_H_
